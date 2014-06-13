@@ -1,11 +1,18 @@
 #! /bin/bash
 
+# Dieses Template basiert auf dem Default Template für Ubuntu 
+# und führt erweiterte Konfigurationen am erstellten Container durch
+
 if [ ! -x lxc-ubuntu ]; then
 	echo Failed because Ubuntu template not readable
 	exit 1
 fi
 
 # code
+
+addAdditionalPackages() {
+	chroot $rootfs apt-get install --force-yes -y wget git htop
+}
 
 addAptProxy() {
 	echo "Acquire::http::Proxy \"http://freerunner.fritz.box:3142\";" > $rootfs/etc/apt/apt.conf.d/01proxy
@@ -20,6 +27,7 @@ if [ $? -ne 0 ]; then
 fi
 
 addAptProxy
+addAdditionalPackages
 
 if [ $? -ne 0 ]; then
     echo Extensions could not be set
