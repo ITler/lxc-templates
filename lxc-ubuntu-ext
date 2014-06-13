@@ -11,6 +11,7 @@ fi
 # code
 
 addAdditionalPackages() {
+	chroot $rootfs apt-get update
 	chroot $rootfs apt-get install --force-yes -y wget git htop
 }
 
