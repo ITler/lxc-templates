@@ -18,9 +18,9 @@ addAdditionalPackages() {
 	chroot $rootfs apt-get update >/dev/null
 	
 	echo Installing additional packages
-	chroot $rootfs apt-get install --force-yes -y wget git htop  >/dev/null
-	
-	return 0
+	chroot $rootfs apt-get install --force-yes -y wget git htop &>/dev/null
+
+    return $?
 }
 
 addAptProxy() {
