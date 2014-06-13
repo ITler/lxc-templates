@@ -1,0 +1,29 @@
+#! /bin/bash
+
+if [ ! -x lxc-ubuntu ]; then
+	echo Failed because Ubuntu template not readable
+	exit 1
+fi
+
+# code
+
+addAptProxy() {
+	echo "Acquire::http::Proxy \"http://freerunner.fritz.box:3142\";" > $rootfs/etc/apt/apt.conf.d/01proxy
+}
+
+
+source lxc-ubuntu
+
+if [ $? -ne 0 ]; then
+    echo Extensions not processed because basic ubuntu template failed
+    exit 1
+fi
+
+addAptProxy
+
+if [ $? -ne 0 ]; then
+    echo Extensions could not be set
+    exit 1
+fi
+
+exit 0
