@@ -11,12 +11,16 @@ fi
 # code
 
 addAdditionalPackages() {
-	chroot $rootfs apt-get update
-	chroot $rootfs apt-get install --force-yes -y wget git htop
+	chroot $rootfs apt-get update >/dev/null
+	chroot $rootfs apt-get install --force-yes -y wget git htop  >/dev/null
+	
+	return 0
 }
 
 addAptProxy() {
 	echo "Acquire::http::Proxy \"http://freerunner.fritz.box:3142\";" > $rootfs/etc/apt/apt.conf.d/01proxy
+	
+	return 0
 }
 
 
