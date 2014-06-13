@@ -3,8 +3,11 @@
 # Dieses Template basiert auf dem Default Template für Ubuntu 
 # und führt erweiterte Konfigurationen am erstellten Container durch
 
+HOMEDIR=$(basename($0))
+pushd $HOMEDIR >/dev/null
+
 if [ ! -x lxc-ubuntu ]; then
-	echo Failed because Ubuntu template not readable
+	echo Failed because Ubuntu template not readable.
 	exit 1
 fi
 
@@ -26,8 +29,10 @@ addAptProxy() {
 
 source lxc-ubuntu
 
+echo Start processing Extensions...
+
 if [ $? -ne 0 ]; then
-    echo Extensions not processed because basic ubuntu template failed
+    echo Extensions not processed because basic ubuntu template failed.
     exit 1
 fi
 
@@ -35,8 +40,10 @@ addAptProxy
 addAdditionalPackages
 
 if [ $? -ne 0 ]; then
-    echo Extensions could not be set
+	echo Error while configuring extensions.
     exit 1
 fi
+
+popd >/dev/null
 
 exit 0
