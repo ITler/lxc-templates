@@ -3,7 +3,7 @@
 # Dieses Template basiert auf dem Default Template für Ubuntu 
 # und führt erweiterte Konfigurationen am erstellten Container durch
 
-HOMEDIR=$(basename($0))
+HOMEDIR=$(dirname $0)
 pushd $HOMEDIR >/dev/null
 
 if [ ! -x lxc-ubuntu ]; then
@@ -14,13 +14,17 @@ fi
 # code
 
 addAdditionalPackages() {
+	echo Updating apt package list
 	chroot $rootfs apt-get update >/dev/null
+	
+	echo Installing additional packages
 	chroot $rootfs apt-get install --force-yes -y wget git htop  >/dev/null
 	
 	return 0
 }
 
 addAptProxy() {
+	echo Adding apt-proxy
 	echo "Acquire::http::Proxy \"http://freerunner.fritz.box:3142\";" > $rootfs/etc/apt/apt.conf.d/01proxy
 	
 	return 0
