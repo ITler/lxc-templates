@@ -13,6 +13,8 @@ fi
 
 # DEFAULT CONFIGS
 APT_PROXY_URL=http://localhost
+APT_PROXY_CONFIG_FILENAME=01proxy
+PACKET_LIST=wget git htop
 
 # erwartet werden Configdateien mit Dateierweiterung *.conf
 CONFIG_DIR=conf.d
@@ -40,14 +42,14 @@ addAdditionalPackages() {
 	chroot $rootfs apt-get update >/dev/null
 	
 	echo Installing additional packages
-	chroot $rootfs apt-get install --force-yes -y wget git htop &>/dev/null
+	chroot $rootfs apt-get install --force-yes -y $PACKET_LIST &>/dev/null
 
     return $?
 }
 
 addAptProxy() {
 	echo Adding apt-proxy
-	echo "Acquire::http::Proxy \"$APT_PROXY_URL\";" > $rootfs/etc/apt/apt.conf.d/01proxy
+	echo "Acquire::http::Proxy \"$APT_PROXY_URL\";" > $rootfs/etc/apt/apt.conf.d/$APT_PROXY_CONFIG_FILENAME
 	
 	return 0
 }
