@@ -3,13 +3,36 @@
 # Dieses Template basiert auf dem Default Template für Ubuntu 
 # und führt erweiterte Konfigurationen am erstellten Container durch
 
-HOMEDIR=$(dirname $0)
-pushd $HOMEDIR >/dev/null
+HOME_DIR=$(dirname $0)
+pushd $HOME_DIR >/dev/null
 
 if [ ! -x lxc-ubuntu ]; then
 	echo Failed because Ubuntu template not readable.
 	exit 1
 fi
+
+# DEFAULT CONFIGS
+APT_PROXY_URL=http://localhost:3142
+#http://freerunner.fritz.box:3142
+
+# erwartet werden Configdateien mit Dateierweiterung.conf
+CONFIG_DIR=conf.d
+if [ -L -x $0 ]; then
+	echo Template $(basename $0) is symlinked
+	CONFIG_DIR=$(dirname$(readlink $0))/$CONFIG_DIR
+else
+	CONFIG_DIR=$HOME_DIR/$CONFIG_DIR
+fi
+
+echo $CONFIG_DIR
+
+if [ ! -x lxc-ubuntu ]; then
+	for f in $CONFIG_DIR/*.conf do
+		echo $f
+		source $CONFIG_DIR/$f
+	done
+
+exit 2
 
 # code
 
@@ -25,7 +48,7 @@ addAdditionalPackages() {
 
 addAptProxy() {
 	echo Adding apt-proxy
-	echo "Acquire::http::Proxy \"http://freerunner.fritz.box:3142\";" > $rootfs/etc/apt/apt.conf.d/01proxy
+	echo "Acquire::http::Proxy \"$APT_PROXY_URL\";" > $rootfs/etc/apt/apt.conf.d/01proxy
 	
 	return 0
 }
