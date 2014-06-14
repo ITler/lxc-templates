@@ -12,9 +12,9 @@ if [ ! -x lxc-ubuntu ]; then
 fi
 
 # DEFAULT CONFIGS
-APT_PROXY_URL=http://localhost:3142
+APT_PROXY_URL=http://localhost
 
-# erwartet werden Configdateien mit Dateierweiterung.conf
+# erwartet werden Configdateien mit Dateierweiterung *.conf
 CONFIG_DIR=conf.d
 if [ -L $0 ]; then
 	echo Template $(basename $0) is symlinked
