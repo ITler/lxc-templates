@@ -13,26 +13,25 @@ fi
 
 # DEFAULT CONFIGS
 APT_PROXY_URL=http://localhost:3142
-#http://freerunner.fritz.box:3142
 
 # erwartet werden Configdateien mit Dateierweiterung.conf
 CONFIG_DIR=conf.d
-if [ -L -x $0 ]; then
+if [ -L $0 ]; then
 	echo Template $(basename $0) is symlinked
-	CONFIG_DIR=$(dirname$(readlink $0))/$CONFIG_DIR
+	CONFIG_DIR=$(dirname $(readlink $0))/$CONFIG_DIR
 else
 	CONFIG_DIR=$HOME_DIR/$CONFIG_DIR
 fi
 
-echo $CONFIG_DIR
+if [ -d $CONFIG_DIR ]; then
+	echo Reading $(basename $CONFIG_DIR)...
 
-if [ ! -x lxc-ubuntu ]; then
-	for f in $CONFIG_DIR/*.conf do
-		echo $f
-		source $CONFIG_DIR/$f
-	done
-
-exit 2
+	for f in $CONFIG_DIR/*.conf 
+	do
+		source $f
+	done;
+	echo ...done
+fi
 
 # code
 
