@@ -14,7 +14,7 @@ fi
 # DEFAULT CONFIGS
 APT_PROXY_URL=http://localhost
 APT_PROXY_CONFIG_FILENAME=01proxy
-PACKET_LIST=wget git htop
+PACKET_LIST="htop wget git"
 
 # erwartet werden Configdateien mit Dateierweiterung *.conf
 CONFIG_DIR=conf.d
